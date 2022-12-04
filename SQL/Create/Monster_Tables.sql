@@ -1,4 +1,20 @@
 
+/*
+drop table monster_stat
+drop table monster_savingthrow
+drop table monster_activeskill
+drop table monster_PassiveSkill
+drop table monster_IMM_RES_VUL
+drop table monster_Sense
+drop table monster_Language
+drop table monster_Ability
+drop table monster_action
+drop table monster_legendaryaction
+
+drop table monster
+*/
+
+
 create table monster(
  ID bigint primary key identity (1,1)
 ,ArmorClass int not null
@@ -12,6 +28,11 @@ create table monster(
 ,ExperiencePoints bigint
 ,AdditionalNotes nvarchar(1200)
 ,MonsterDescription nvarchar(2500)
+,Image nvarchar(max)
+,URL nvarchar(max)
+,CreatedBy int not null foreign key references users(id)
+,CreatedDate date not null
+,ModifiedDate date
 )
 
 create table monster_Stat(
@@ -87,7 +108,7 @@ create table monster_Ability(
 ,sDesc nvarchar(max) not null
 )
 
-create table monster_Actions(
+create table monster_Action(
  ID bigint primary Key identity(1,1)
 ,monsterID bigint not null foreign key REFERENCES monster(ID)
 ,sName nvarchar(255) not null
@@ -95,7 +116,7 @@ create table monster_Actions(
 ,sDesc nvarchar(max) not null
 )
 
-create table monster_LegendaryActions(
+create table monster_LegendaryAction(
  ID bigint primary Key identity(1,1)
 ,monsterID bigint not null foreign key REFERENCES monster(ID)
 ,sName nvarchar(255) not null

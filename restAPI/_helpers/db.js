@@ -7,7 +7,7 @@ const dbInfo = require('../config')
 const dbName = dbInfo.database
 
 const dbConfig = {
-    "server": "192.168.86.131",
+    "server": dbInfo.server,
     "options": {
         "port": 1433,
         "trustServerCertificate": true
@@ -15,8 +15,8 @@ const dbConfig = {
     "authentication": {
         "type": "default",
         "options": {
-            "userName": "sa",
-            "password": "NemuiServer"
+            "userName": dbInfo.user,
+            "password": dbInfo.pass
         }
     }
 }
@@ -40,7 +40,6 @@ async function initialize() {
 
     // init models and add them to the exported db object
     db.User = require('../routes/users/user.model')(sequelize);
-    db.Monster = require('../routes/monsters/monster.model')(sequelize);
 
     // sync all models with database
     await sequelize.sync({ alter: false });

@@ -1,0 +1,41 @@
+.homePage{
+  display: flex;
+  margin-top: 6vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
+  /* z-index: 1; */
+}
+
+.homePage .links{
+  display:flex;
+  flex-flow: row;
+}
+.homePage .links p{
+  margin: 10px;
+  text-decoration: none;
+}
+
+.homePage .links p{
+  margin: 10px;
+  text-decoration: none;
+}
+
+.homePage .user{
+  display:flex;
+  flex-flow: row;
+  margin:10px
+}
+
+.homePage .user p{
+  margin: 10px;
+}
+
+.homePage h1{
+  display:flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
