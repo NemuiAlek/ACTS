@@ -5,8 +5,8 @@ import Index from "./components/index"
 import MonsterDirectory from "./components/monsterDirectory"
 import CombatTracker from "./components/combatTracker"
 import About from "./components/about"
-import SignUp from "./components/auth/logIn"
-import LogIn from "./components/auth/signUp"
+import SignUp from "./components/auth/signUp"
+import LogIn from "./components/auth/logIn"
 
 function App() {
   return (

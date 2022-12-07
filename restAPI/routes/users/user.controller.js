@@ -11,7 +11,7 @@ const userService = require('./user.service');
 
 router.get('/', getAll);
 router.get('/:id', getById);
-router.post('/', createSchema, create);
+router.post('/signup', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
@@ -53,9 +53,7 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        title: Joi.string().required(),
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        userName: Joi.string().required(),
         role: Joi.string().valid(Role.Admin, Role.User).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
@@ -66,9 +64,7 @@ function createSchema(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        title: Joi.string().empty(''),
-        firstName: Joi.string().empty(''),
-        lastName: Joi.string().empty(''),
+        userName: Joi.string().empty(''),
         role: Joi.string().valid(Role.Admin, Role.User).empty(''),
         email: Joi.string().email().empty(''),
         password: Joi.string().min(6).empty(''),

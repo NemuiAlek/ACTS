@@ -8,7 +8,19 @@ const errorHandler = require('_middleware/error-handler');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+let whitelist = ['http://localhost:4000','http://localhost:3000'];
+let corsOptions = {
+    origin: (origin, callback)=>{
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },credentials: true
+}
+
+app.use(cors(corsOptions));
 
 // api routes
 app.use('/users', require('./routes/users/user.controller'));

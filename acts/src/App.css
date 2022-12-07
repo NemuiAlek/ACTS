@@ -1,3 +1,7 @@
+html{
+  background-color: gray;
+}
+
 .homePage{
   display: flex;
   margin-top: 6vw;

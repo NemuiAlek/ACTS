@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const linkStyle = {
     textDecoration: "none",
     color: 'black',
-    'font-weight': 'bold',
+    'fontWeight': 'bold',
 }
 
 export default function LogIn(){
@@ -13,7 +13,17 @@ export default function LogIn(){
     
         <h1>Log In Page</h1>
         <p><Link to={"/"} style={linkStyle}>Home</Link></p>
-    
+
+        <form>
+        <p>UserName/Email</p>
+        <input></input>
+        <p>Password</p>
+        <input></input>
+        <br></br>
+        <br></br>
+        <button>Submit</button>
+        </form>
+
         </div>
     )
     }

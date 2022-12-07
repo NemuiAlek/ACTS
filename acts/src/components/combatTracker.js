@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const linkStyle = {
     textDecoration: "none",
     color: 'black',
-    'font-weight': 'bold',
+    'fontWeight': 'bold',
 }
 
 export default function CombatTracker(){
