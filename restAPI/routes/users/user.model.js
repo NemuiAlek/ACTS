@@ -9,7 +9,7 @@ function model(sequelize) {
         passwordHash: { type: DataTypes.STRING, allowNull: false },
         role: { type: DataTypes.STRING, allowNull: false }
     };
-
+/*
     const options = {
         defaultScope: {
             // exclude password hash by default
@@ -20,6 +20,7 @@ function model(sequelize) {
             withHash: { attributes: {}, }
         }
     };
+    */
 
-    return sequelize.define('User', attributes, options);
+    return sequelize.define('User', attributes/*, options*/);
 }

@@ -12,6 +12,8 @@ const userService = require('./user.service');
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/signup', createSchema, create);
+router.post('/validate',inUse);
+router.post('/login',logIn)
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
@@ -28,6 +30,22 @@ function getAll(req, res, next) {
 function getById(req, res, next) {
     userService.getById(req.params.id)
         .then(user => res.json(user))
+        .catch(next);
+}
+
+function inUse(req, res, next) {
+    userService.inUse(req.body)
+        .then((msg) => res.json(msg))
+        .catch(next);
+}
+
+function logIn(req, res, next) {
+    userService.logIn(req.body)
+        .then((msg) => {
+        req.session.currentlyLoggedIn = msg[1]
+        res.json(msg[0])
+        console.log(req.session)
+        })
         .catch(next);
 }
 

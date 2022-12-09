@@ -7,7 +7,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    inUse,
+    logIn
 };
 
 async function getAll() {
@@ -18,11 +20,50 @@ async function getById(id) {
     return await getUser(id);
 }
 
+async function inUse(params) {
+     if (await db.User.findOne({ where: { email: params.email } }) !== null){
+        return 'Email already in use.'
+     }else if (await db.User.findOne({ where: { userName: params.userName } }) !== null){
+        return 'Username already in use.'
+     }else{
+        return 'Pass'
+     }
+    }
+
+async function logIn(params) {
+        if (params.username === '' || params.password === '') {
+            return "BLANK FIELD";
+        }
+       
+        let result = ''
+        let loggedUser
+
+        await
+        db.User.findOne({ where: { userName: params.userName } })
+          .then(resultFromDB => {
+            if (resultFromDB === null) {
+                console.log('im here!')
+                result = "Username/Email not found";
+            } else if (bcrypt.compareSync(params.password, resultFromDB.passwordHash)) {
+              loggedUser = resultFromDB;
+              result = "successfully logged in";
+            } else {
+              result = "username password combination not correct"
+            }
+          })
+          .catch(error => console.log(error));
+
+        return [result,loggedUser]
+      }
+
 async function create(params) {
     // validate
     if (await db.User.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
+
+    //prevent admin users
+    params.role = 'user'
 
     const user = new db.User(params);
     
