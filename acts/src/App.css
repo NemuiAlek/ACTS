@@ -2,14 +2,30 @@ html{
   background-color: gray;
 }
 
+.Nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: top;
+  text-align: center;
+  padding: 10px;
+  background-color: gray;
+  /* z-index: 1; */
+}
+
+.navItem{
+  margin: 0 1vw 0 1vw
+}
+
+
 .homePage{
   display: flex;
-  margin-top: 6vw;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 50px;
+  padding: 6vw 50px 50px 50px;
+  background-color: gray;
   /* z-index: 1; */
 }
 

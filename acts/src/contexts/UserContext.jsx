@@ -1,16 +1,16 @@
 import { createContext, useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const UserContext = createContext();
 
-// export const UserProvider = (props) => {
-// const { children } = props;
 export const UserProvider = ({ children }) => {
+	const navigate = useNavigate();
 	const [theUser, setTheUser] = useState(null);
 
 	const getUserInfo = () => {
 		axios
-			.get("http://localhost:4000/serializeuser", {
+			.get("http://localhost:4000/users/serialize", {
 				withCredentials: true,
 			})
 			.then((response) => {
@@ -27,11 +27,13 @@ export const UserProvider = ({ children }) => {
 
 	const logout = () => {
 		axios
-			.post("http://localhost:4000/logout", {}, { withCredentials: true })
+			.post("http://localhost:4000/users/logout", {}, { withCredentials: true })
 			.then((response) => {
 				console.log(response.data);
 				if (response.data.message === "successfully logged out")
 					setTheUser(null);
+					navigate("/");
+					window.location.reload();
 			})
 			.catch((err) => {
 				console.log(err);

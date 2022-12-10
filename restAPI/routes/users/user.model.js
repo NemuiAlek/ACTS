@@ -4,8 +4,8 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        userName: { type: DataTypes.STRING, allowNull: false },
-        email: { type: DataTypes.STRING, allowNull: false },
+        userName: { type: DataTypes.STRING, allowNull: false, unique: true },
+        email: { type: DataTypes.STRING, allowNull: false, unique: true },
         passwordHash: { type: DataTypes.STRING, allowNull: false },
         role: { type: DataTypes.STRING, allowNull: false }
     };

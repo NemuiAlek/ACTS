@@ -7,13 +7,15 @@ const linkStyle = {
     'fontWeight': 'bold',
 }
 
-export default function MonsterDirectory(){
+export default function CombatTracker(){
     return (
+        <div>
         <div className="homePage">
     
-        <h1>MonsterDirectory</h1>
+        <h1>Combat Tracker</h1>
         <p><Link to={"/"} style={linkStyle}>Home</Link></p>
     
+        </div>
         </div>
     )
     }

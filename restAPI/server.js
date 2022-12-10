@@ -32,8 +32,8 @@ let corsOptions = {
     },credentials: true
 }
 
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+//app.use(cors());
 
 // api routes
 app.use('/users', require('./routes/users/user.controller'));

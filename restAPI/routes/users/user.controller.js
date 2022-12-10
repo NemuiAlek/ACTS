@@ -8,24 +8,18 @@ const userService = require('./user.service');
 
 // routes
 
-
-router.get('/', getAll);
-router.get('/:id', getById);
+router.get('/serialize', serialize)
+router.get('/profile/:id', getById);
 router.post('/signup', createSchema, create);
 router.post('/validate',inUse);
-router.post('/login',logIn)
+router.post('/login', logIn)
+router.post('/logout', logOut)
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
 module.exports = router;
 
 // route functions
-
-function getAll(req, res, next) {
-    userService.getAll()
-        .then(users => res.json(users))
-        .catch(next);
-}
 
 function getById(req, res, next) {
     userService.getById(req.params.id)
@@ -42,11 +36,32 @@ function inUse(req, res, next) {
 function logIn(req, res, next) {
     userService.logIn(req.body)
         .then((msg) => {
-        req.session.currentlyLoggedIn = msg[1]
-        res.json(msg[0])
-        console.log(req.session)
+            if(msg[0] === "Successfully logged in"){
+                req.session.currentlyLoggedIn = msg[1]
+                res.json(msg[0])
+            } else {
+                res.json(msg[0])
+            }
+
+        console.log(msg[0])
         })
         .catch(next);
+}
+
+function serialize(req, res, next) {
+    userService.serialize(req.session)
+        .then((msg) => {
+            res.json(msg)
+            console.log(msg)
+        })
+        .catch(next);
+}
+
+function logOut(req, res, next) {
+    req.session.destroy(err => {
+        if (err) console.log(err);
+        res.json({message: "successfully logged out"});
+      });
 }
 
 function create(req, res, next) {

@@ -1,8 +1,7 @@
 import { useEffect, useState, useContext } from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Captcha from '../../API/captcha';
-import ReactDOM from 'react-dom'
 
 const linkStyle = {
     textDecoration: "none",
@@ -11,6 +10,8 @@ const linkStyle = {
 };
 
 export default function SignUp(){
+
+    const navigate = useNavigate();
 /*
 ======================== STATES ======================
 */
@@ -68,11 +69,6 @@ const updateInput = (e, thingToUpdate) => {
     setFormState({ ...formState, [thingToUpdate]: e.target.value });
 };
 
-const testUser = () =>{
-
-}
-
-
 const submitSignupForm = (event) => {
 
     event.preventDefault();
@@ -83,7 +79,7 @@ const submitSignupForm = (event) => {
         {
             userName: formState.username,
             email: formState.email,
-        },
+        },{withCredentials: true}
     )
     .then((msg) => {
     
@@ -150,12 +146,11 @@ useEffect(()=>{
             )
             .then((response) => {
                 console.log(response)//getUserInfo();
+                navigate("/login")
             })
             .catch((err) => {
                 console.log(err);
             });
-        } else {
-            console.log(errorMessage)
         }
 },[errorMessage])
 

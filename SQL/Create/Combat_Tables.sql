@@ -1,6 +1,7 @@
 /*
 drop table combat_conditions
 drop table combat_notes
+
 drop table combat_Line
 drop table combat
 */
