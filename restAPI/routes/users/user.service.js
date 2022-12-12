@@ -3,7 +3,6 @@ const { Op } = require("sequelize");
 const db = require('_helpers/db');
 
 module.exports = {
-    getById,
     create,
     update,
     delete: _delete,
@@ -13,15 +12,13 @@ module.exports = {
 };
 
 function serializeTheUserObject(userObj){
-    let result = {};
-    if(userObj.username) result.username = userObj.username;
+    let result = {}
+    if(userObj.id) result.id = userObj.id
+    if(userObj.userName) result.userName = userObj.userName;
     if(userObj.email) result.email = userObj.email;
+
     return result;
   }
-
-async function getById(id) {
-    return await getUser(id);
-}
 
 async function inUse(params) {
      if (await db.User.findOne({ where: { email: params.email } }) !== null){
@@ -37,7 +34,7 @@ async function logIn(params) {
         let result = ''
         let loggedUser
 
-        if (params.username === '' || params.password === '') {
+        if (params.userName === '' || params.password === '') {
             result = "Username/Password cannot be blank";
         } else {
         await
@@ -64,7 +61,6 @@ async function logIn(params) {
       }
     
 async function serialize(session) {
-    console.log(session)
 
     let result
 
@@ -79,6 +75,7 @@ async function serialize(session) {
             console.log(err)
         })
     }
+
     return result
 }
 
@@ -102,28 +99,71 @@ async function create(params) {
     await logIn(user)
 }
 
-async function update(id, params) {
+async function update(session, id, params) {
     const user = await getUser(id);
+    let passCompare
+
+    const emailChanged = params.email && user.email !== params.email;
+    const userChanged = params.userName && user.userName !== params.userName;
 
     // validate
-    const emailChanged = params.email && user.email !== params.email;
+    if(!session.currentlyLoggedIn){
+        throw 'No session found, please log in'
+    } 
+    
+    if (session.currentlyLoggedIn.id != id){
+        throw 'Session ID does not match request ID'
+    }
+
+
     if (emailChanged && await db.User.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await bcrypt.hash(params.password, 10);
+
+    if (userChanged && await db.User.findOne({ where: { userName: params.userName } })) {
+        throw 'Username "' + params.userName + '" is already registered';
     }
 
+
+    if (params.newPass !== undefined) {
+        if (bcrypt.compareSync(params.currentPass, user.passwordHash)){
+            user.passwordHash = await bcrypt.hash(params.newPass, 10);
+        } else {
+            passCompare = false
+        }
+    }
+
+    if (passCompare === false){
+        throw 'Current password is incorrect'
+    }
+
+
     // copy params to user and save
-    Object.assign(user, params);
+    Object.assign(user, {userName: params.userName, email: params.email});
     await user.save();
+
+    return 'User Updated'
 }
 
-async function _delete(id) {
+async function _delete(session, id, params) {
     const user = await getUser(id);
+
+    if(!session.currentlyLoggedIn){
+        throw 'No session found, please log in'
+    } 
+    
+    if (session.currentlyLoggedIn.id != id){
+        throw 'Session ID does not match request ID'
+    }
+
+    if(!bcrypt.compareSync(params.currentPass, user.passwordHash)){
+        throw "Incorrect Password"
+    }
+
     await user.destroy();
+
+    return "User deleted"
 }
 
 // helper functions

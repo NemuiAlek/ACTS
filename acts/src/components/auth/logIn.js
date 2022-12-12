@@ -70,7 +70,6 @@ useEffect(() => {
         <div className="homePage">
     
         <h1>Log In Page</h1>
-        <p><Link to={"/"} style={linkStyle}>Home</Link></p>
 
         <form>
         {<p>{errorMessage}</p>}
@@ -82,6 +81,8 @@ useEffect(() => {
 		updateInput(e, "username");
 		}}></input>
 
+        <br />
+        <br />
         <p>Password</p>
         <input 
         type="password" id="passwordInput"

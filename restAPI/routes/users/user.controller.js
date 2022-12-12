@@ -9,23 +9,16 @@ const userService = require('./user.service');
 // routes
 
 router.get('/serialize', serialize)
-router.get('/profile/:id', getById);
 router.post('/signup', createSchema, create);
 router.post('/validate',inUse);
 router.post('/login', logIn)
 router.post('/logout', logOut)
-router.put('/:id', updateSchema, update);
-router.delete('/:id', _delete);
+router.put('/update/:id', updateSchema, update);
+router.post('/delete/:id', _delete);
 
 module.exports = router;
 
 // route functions
-
-function getById(req, res, next) {
-    userService.getById(req.params.id)
-        .then(user => res.json(user))
-        .catch(next);
-}
 
 function inUse(req, res, next) {
     userService.inUse(req.body)
@@ -71,14 +64,15 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
-    userService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'User updated' }))
+    userService.update(req.session, req.params.id, req.body)
+        .then((msg) => res.json(msg))
         .catch(next);
+
 }
 
 function _delete(req, res, next) {
-    userService.delete(req.params.id)
-        .then(() => res.json({ message: 'User deleted' }))
+    userService.delete(req.session, req.params.id, req.body)
+        .then((msg) => res.json(msg))
         .catch(next);
 }
 
@@ -96,12 +90,13 @@ function createSchema(req, res, next) {
 }
 
 function updateSchema(req, res, next) {
+    console.log(req.body)
     const schema = Joi.object({
         userName: Joi.string().empty(''),
-        role: Joi.string().valid(Role.Admin, Role.User).empty(''),
         email: Joi.string().email().empty(''),
-        password: Joi.string().min(6).empty(''),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).empty('')
-    }).with('password', 'confirmPassword');
+        currentPass: Joi.string().min(6).empty(''),
+        newPass: Joi.string().min(6).empty(''),
+        confirmPass: Joi.string().valid(Joi.ref('newPass')).empty('')
+    }).with('newPass', 'confirmPass');
     validateRequest(req, next, schema);
 }

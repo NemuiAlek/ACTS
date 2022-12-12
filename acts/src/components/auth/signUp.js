@@ -58,7 +58,9 @@ if (type === 'Pass'){
 }
 
 const validateConfirm = () =>{
-    if(formState.confirmPassword !== formState.password){
+    if(formState.password === '' || formState.confirmPassword === ''){
+        validate((x) => ({...x, validConfirm: false}))
+    }else if(formState.confirmPassword !== formState.password){
         validate((x) => ({...x, validConfirm: 'Passwords dont match!'}))
     }else if (formState.confirmPassword === formState.password){
         validate((x) => ({...x, validConfirm: true}))
@@ -128,7 +130,7 @@ useEffect(()=>{
 
 validateConfirm()
 
-},[formState.confirmPassword])
+},[formState.confirmPassword, formState.password])
 
 useEffect(()=>{
     if(errorMessage.validUsername === true && errorMessage.validEmail === true && errorMessage.validPass === true && errorMessage.validConfirm === true){
@@ -161,55 +163,63 @@ useEffect(()=>{
         <div className="homePage">
     
         <h1>Sign Up</h1>
-        <p><Link to={"/"} style={linkStyle}>Home</Link></p>
 
         <div className="username">
-        <form>
+            <form>
 
-        {<p>{errorMessage.validUsername}</p>}
-        <p>UserName</p>
-        <input id="usernameInput"
-        type="text"
-		value={formState.username}
-		onChange={(e) => {
-		updateInput(e, "username");
-		}}></input>
+                <br />
+                {errorMessage.validUsername !== false && (
+                    <p>{errorMessage.validUsername}</p>
+                )}
+                <p>UserName</p>
+                <input id="usernameInput"
+                type="text"
+                value={formState.username}
+                onChange={(e) => {
+                updateInput(e, "username");
+                }}></input>
 
-        {<p>{errorMessage.validEmail}</p>}
-        <p>Email</p>
-        <input id="emailInput"
-        type="text"
-		value={formState.email}
-		onChange={(e) => {
-		updateInput(e, "email");
-		}}></input>
+                <br />
+                {errorMessage.validEmail !== false && (
+                    <p>{errorMessage.validEmail}</p>
+                )}
+                <p>Email</p>
+                <input id="emailInput"
+                type="text"
+                value={formState.email}
+                onChange={(e) => {
+                updateInput(e, "email");
+                }}></input>
 
-        {<p>{errorMessage.validPass}</p>}
-        <p>Password</p>
-        <input 
-        type="password" id="passwordInput"
-		value={formState.password}
-		onChange={(e) => {
-		updateInput(e, "password");
-		}}></input>
+                <br />
+                {errorMessage.validPass !== false && (
+                    <p>{errorMessage.validPass}</p>
+                )}
+                <p>Password</p>
+                <input 
+                type="password" id="passwordInput"
+                value={formState.password}
+                onChange={(e) => {
+                updateInput(e, "password");
+                }}></input>
 
-        {<p>{errorMessage.validConfirm}</p>}
-        <p>Confirm Password</p>
-        <input id="confirmPasswordInput"
-        type="password"
-		value={formState.confirmPassword}
-		onChange={(e) => {
-		updateInput(e, "confirmPassword");
-		}}></input>
+                <br />
+                {errorMessage.validConfirm !== false && (
+                    <p>{errorMessage.validConfirm}</p>
+                )}
+                <p>Confirm Password</p>
+                <input id="confirmPasswordInput"
+                type="password"
+                value={formState.confirmPassword}
+                onChange={(e) => {
+                updateInput(e, "confirmPassword");
+                }}></input>
 
-        <br></br>
-        <br></br>
-        
-        <button onClick={submitSignupForm}>Submit</button>
-        </form>
+                <br/>
+                
+                <button onClick={submitSignupForm}>Submit</button>
+            </form>
         </div>
-
-    
-        </div>
+    </div>
     )
     }

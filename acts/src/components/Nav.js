@@ -80,7 +80,7 @@ export default function Navz(){
                 {theUser &&(
                   <div>
                     <Nav.Item className="navItem">
-                      <Nav.Link as={Link} to={"/profile"}>Profile</Nav.Link>
+                      <Nav.Link as={Link} to={"/Profile/"+theUser.id}>Profile</Nav.Link>
                     </Nav.Item>
                 </div>
                 )}

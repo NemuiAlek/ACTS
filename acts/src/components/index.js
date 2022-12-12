@@ -16,6 +16,7 @@ export default function Index(){
 return (
     <div className="homePage">
 
+
     <h1>Advanced Combat Tracking System</h1>
 
         <div className="links">
@@ -33,6 +34,7 @@ return (
 
     {theUser && (
         <div className="user">
+        <p><Link to={"/Profile/"+theUser.id}style={linkStyle}>Profile</Link></p>
         <p><a href="#" onClick={logout} style={linkStyle}>Log Out</a></p>
         </div>
     )}
