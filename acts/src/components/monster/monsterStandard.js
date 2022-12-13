@@ -43,7 +43,7 @@ useEffect(() => {
 }, [])
 
 const getDetails = (id) => {
-    navigate('/monster/'+id)
+    navigate('/monster/standard/'+id)
 }
 
 /*

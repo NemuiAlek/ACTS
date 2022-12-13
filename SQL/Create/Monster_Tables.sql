@@ -1,7 +1,5 @@
 
 /*
-drop table monster_stat
-drop table monster_savingthrow
 drop table monster_activeskill
 drop table monster_PassiveSkill
 drop table monster_IMM_RES_VUL
@@ -15,54 +13,46 @@ drop table monster
 */
 
 
-create table monster(
- ID bigint primary key identity (1,1)
-,ArmorClass int not null
-,HitPoints int not null
-,HitPointsRolled nvarchar(50)
-,GroundSpeed int
-,FlightSpeed int
-,LegendaryRes int
-,LegendaryAct int
-,ChallengeRating int
-,ExperiencePoints bigint
-,AdditionalNotes nvarchar(1200)
-,MonsterDescription nvarchar(2500)
-,Image nvarchar(max)
-,URL nvarchar(max)
-,CreatedBy int not null foreign key references users(id)
-,CreatedDate date not null
-,ModifiedDate date
+CREATE TABLE monster(
+ id BIGINT PRIMARY KEY IDENTITY (1,1)
+,monsterName VARCHAR(100) NOT NULL
+,Title VARCHAR(1200)
+,ArmorClass INT NOT NULL
+,HitPoints INT NOT NULL
+,HitPointsRolled NVARCHAR(50)
+
+,GroundSpeed INT
+,FlightSpeed INT
+,swimSpeed INT
+,burrowSpeed INT
+
+,Strength INT NOT NULL
+,Dexterity INT NOT NULL
+,Constitution INT NOT NULL
+,Inteligence INT NOT NULL
+,Wisdom INT NOT NULL
+,Charisma INT NOT NULL
+
+,LegendaryRes INT
+,LegendaryAct INT
+,ChallengeRating INT
+,ExperiencePoints BIGINT
+,AdditionalNotes NVARCHAR(1200)
+,MonsterDescription NVARCHAR(2500)
+,Image NVARCHAR(MAX)
+,URL NVARCHAR(MAX)
+,CreatedBy INT NOT NULL FOREIGN KEY REFERENCES users(id)
+,CreatedDate DATE NOT NULL
+,ModifiedDate DATE
 )
 
-create table monster_Stat(
- ID int primary key identity (1,1)
-,monsterID bigint not null foreign key REFERENCES  monster(ID) unique
-,Strength int not null
-,Dexterity int not null
-,Constitution int not null
-,Inteligence int not null
-,Wisdom int not null
-,Charisma int not null
-)
 
-create table monster_SavingThrow(
- ID int primary key identity (1,1)
-,monsterID bigint not null foreign key REFERENCES  monster(ID) unique
-,Strength int not null
-,Dexterity int not null
-,Constitution int not null
-,Inteligence int not null
-,Wisdom int not null
-,Charisma int not null
-)
-
-create table monster_ActiveSkill(
- ID bigint primary Key identity(1,1)
-,monsterID bigint not null foreign key REFERENCES monster(ID)
-,sName nvarchar(50) not null
-,modifier int not null
-,constraint chk_activeskillname check (sName in ('Acrobatics','Animal Handling','Arcana','Athletics','Deception','History','Insight','Intimidation','Investigation','Medicine','Nature','Perception','Performance','Persuasion','Religion','Sleight of Hand','Stealth','Survival'))
+CREATE TABLE monster_ActiveSkill(
+ ID BIGINT PRIMARY KEY IDENTITY(1,1)
+,monsterID BIGINT NOT NULL FOREIGN KEY REFERENCES monster(ID)
+,sName NVARCHAR(50) NOT NULL
+,modifier INT NOT NULL
+,CONSTRAINT chk_activeskillname CHECK (sName IN ('Acrobatics','Animal Handling','Arcana','Athletics','Deception','History','Insight','Intimidation','Investigation','Medicine','Nature','Perception','Performance','Persuasion','Religion','Sleight of Hand','Stealth','Survival'))
 )
 
 create table monster_PassiveSkill(

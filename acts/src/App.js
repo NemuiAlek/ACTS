@@ -9,7 +9,9 @@ import Nav from "./components/Nav"
 // Monster Routes
 import MonsterStandard from "./components/monster/monsterStandard"
 import MonsterCustom from "./components/monster/monsterCustom"
-import MonsterDetail from "./components/monster/monsterDetail"
+import MonsterStandardDetail from "./components/monster/monsterStandardDetail"
+import MonsterCustomDetail from "./components/monster/monsterCustomDetail"
+import MonsterCreate_Modify from "./components/monster/monsterCreate_Modify"
 
 // Combat Routes
 import CombatTracker from "./components/combat/combatTracker"
@@ -39,7 +41,10 @@ function App() {
         {/* Monster Routes */}
           <Route path="/Monster/standard" element={<MonsterStandard />} />
           <Route path="/Monster/custom" element={<MonsterCustom />} />
-          <Route path="/Monster/:id" element={<MonsterDetail />} />
+          <Route path="/Monster/standard/:id" element={<MonsterStandardDetail />} />
+          <Route path="/Monster/custom/:id" element={<MonsterCustomDetail />} />
+          <Route path="/Monster/create-modify/:id" element={<MonsterCreate_Modify />} />
+
 
         {/* Combat Routes */}
           <Route path="/CombatTracker" element={<CombatTracker />} />

@@ -38,7 +38,7 @@ export default function Profile(){
     const waitToLoad = () =>{
         setTimeout(() => {
             setUser((x) => ({...x, wait:true}))
-        }, 200);
+        }, 500);
     }
 
     const updateInput = (e, thingToUpdate) => {

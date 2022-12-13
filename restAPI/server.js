@@ -37,7 +37,7 @@ app.use(cors(corsOptions));
 
 // api routes
 app.use('/users', require('./routes/users/user.controller'));
-app.use('/monsters', require('./routes/monsters/test'));
+app.use('/monsters', require('./routes/monsters/monster.controller'));
 
 // global error handler
 app.use(errorHandler);
