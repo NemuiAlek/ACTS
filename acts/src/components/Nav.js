@@ -35,8 +35,7 @@ export default function Navz(){
                   {theUser && (
                     <div>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to={"/Monster/custom"}>Create</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/Monster/custom"}>Update</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/Monster/create-modify/new"}>Create</NavDropdown.Item>
                   </div>
                   )}
 

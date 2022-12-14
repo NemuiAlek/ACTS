@@ -2,6 +2,7 @@ INSERT INTO dbo.monster
 (
 	monsterName,
 	Title,
+	Alignment,
     ArmorClass,
     HitPoints,
     HitPointsRolled,
@@ -30,6 +31,7 @@ INSERT INTO dbo.monster
 VALUES
 (   'Vyraetra',
 	'The Wretched Wyrm',
+	'Evil',
 	22,         -- ArmorClass - int
     367,         -- HitPoints - int
     '21d20+147',      -- HitPointsRolled - nvarchar(50)

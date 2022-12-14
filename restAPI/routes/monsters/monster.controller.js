@@ -29,7 +29,7 @@ function monsterData(req, res, next) {
 }
 
 function create_update(req, res, next) {
-    monsterService.create(req.params.id, req.body)
+    monsterService.create_update(req.params.id, req.body)
         .then(() => res.json('check sql kekw'))
         .catch(next);
 }
