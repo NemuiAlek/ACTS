@@ -12,35 +12,49 @@ export default function MonsterStandard(){
 */
 
 const [monster, setMonster] = useState({
-    actions:[],
-    alignment:'',
-    armor_class:18,
-    challenge_rating:13,
-    charisma:17,
-    condition_immunities:[],
-    constitution:21,
-    damage_immunities: [],
-    damage_resistances: [],
-    damage_vulnerabilities: [],
-    dexterity: 10,
-    hit_dice: "15d12",
-    hit_points: 172,
-    hit_points_roll: "15d12+75",
-    index: "adult-brass-dragon",
-    intelligence: 14,
-    languages: "Common, Draconic",
-    legendary_actions: [],
-    name: "Adult Brass Dragon",
-    proficiencies:[],
-    senses: {},
-    size:"Huge",
-    special_abilities:[{usage:{}}],
-    speed:{},
-    strength:23,
-    type:"dragon",
-    url:"/api/monsters/adult-brass-dragon",
-    wisdom:13,
-    xp:10000
+    actions: [],
+    alignment: "chaotic evil",
+    armor_class: 14,
+    armor_desc: "natural armor",
+    challenge_rating: "7",
+    charisma: 10,
+    charisma_save: null,
+    condition_immunities: "paralyzed, restrained",
+    constitution: 20,
+    constitution_save: null,
+    damage_immunities: "cold",
+    damage_resistances: "acid; bludgeoning, piercing, and slashing from nonmagical attacks",
+    damage_vulnerabilities: "",
+    dexterity: 8,
+    dexterity_save: null,
+    document__license_url: "http://open5e.com/legal",
+    document__slug: "tob2",
+    document__title: "Tome of Beasts 2 OGL",
+    group: null,
+    hit_dice: "10d12+50",
+    hit_points: 115,
+    img_main: null,
+    intelligence: 7,
+    intelligence_save: null,
+    languages: "understands Common but can’t speak",
+    legendary_actions: "",
+    legendary_desc: "",
+    name: "A-mi-kuk",
+    perception: 5,
+    reactions: "",
+    senses: "darkvision 60 ft., tremorsense 30 ft., passive Perception 15",
+    size: "Huge",
+    skills: {athletics: 10, perception: 5, stealth: 2},
+    slug: "a-mi-kuk",
+    special_abilities:[],
+    speed:{swim: 40, burrow: 20, walk: 30},
+    spell_list: [],
+    strength: 21,
+    strength_save: null,
+    subtype: "",
+    type: "aberration",
+    wisdom: 14,
+    wisdom_save: null,
     })
 const [loading, setLoading] = useState(false)
 
@@ -52,7 +66,7 @@ let speedValues
 
 const getMonster = () =>{
     axios
-    .get("https://www.dnd5eapi.co/api/monsters/" + params.id, {
+    .get("https://api.open5e.com/monsters/" + params.id, {
     })
     .then((response) => {
         setMonster(() => response.data);
@@ -97,7 +111,7 @@ useEffect(() => {
             <div className="section-left">
                 <div className="creature-heading">
                     <h1>{monster.name}</h1>
-                    <h2>{monster.alignment}</h2>
+                    <h2>{monster.size} {monster.type}, {monster.alignment}</h2>
                 </div>  
                 <svg height="5" width="100%" className="tapered-rule">
                 <polyline points="0,0 400,2.5 0,5"></polyline>
@@ -105,7 +119,7 @@ useEffect(() => {
                 <div className="top-stats">
                     <div className="property-line first">
                         <h4>Armor Class </h4>
-                        <p>{monster.armor_class}</p>
+                        <p>{monster.armor_class} {monster.armor_desc}</p>
                     </div>  
                     <div className="property-line">
                         <h4>Hit Points </h4>
@@ -153,65 +167,60 @@ useEffect(() => {
             </svg>
                         
                     <h6 />
-                    
-                    {monster.proficiencies.length !== 0 && 
+             
+                    {(monster.strength_save !== null || monster.dexterity_save !== null || monster.constitution_save !== null ||
+                     monster.intelligence_save !== null || monster.wisdom_save !== null || monster.charisma_save !== null) && (
                     <div className="property-line">
                         <h4>Saving Throws </h4>
-                        {monster.proficiencies.map((array) => (
-                            array.proficiency.name.includes('Saving Throw') ? 
-                            <p key={array.proficiency.index + 'SavingThrows'}>{array.proficiency.name.slice(array.proficiency.name.length - 3)} +{array.value}, </p> 
-                            : ''
-                        )) }
+                        <p>
+                        {monster.strength_save !== null ? `STR +${monster.strength_save}  ` : ''}
+                        {monster.dexterity_save !== null ? `DEX +${monster.dexterity_save}  ` : ''}
+                        {monster.constitution_save !== null ? `CON +${monster.constitution_save}  ` : ''}
+                        {monster.intelligence_save !== null ? `INT +${monster.intelligence_save}  ` : ''}
+                        {monster.wisdom_save !== null ? `WIS +${monster.wisdom_save}  ` : ''}
+                        {monster.charisma_save !== null ? `CHA +${monster.charisma_save}  ` : ''}
+                        </p>
                     </div> 
-                    }
+                    )}
 
-                    {monster.proficiencies.length !== 0 && 
+                    {monster.skills !== 0 && 
                     <div className="property-line">
                         <h4>Skills </h4>
-                        {monster.proficiencies.map((array) => (
-                            array.proficiency.name.includes('Skill') ? 
-                            <p key={array.proficiency.index +  'Skills'}>{array.proficiency.name.replace('Skill: ','')} +{array.value}, </p> 
-                            : ''
-                        )) }
+                        {Object.entries(monster.skills).map((array)=>(
+                                <p key={array[0]}>{array[0]} {array[1]}  </p>
+                        ))
+                        }
                     </div> 
                     }
 
                     {monster.damage_vulnerabilities.length !== 0 && 
                     <div className="property-line">
                         <h4>Damange Vulnerabilities </h4>
-                        {monster.damage_vulnerabilities.map((array) => (
-                            <p key={array}>{array}, </p>
-                        )) }
+                        <p>{monster.damage_vulnerabilities}</p>
                     </div> 
                     }
+
 
                     {monster.damage_immunities.length !== 0 && 
                     <div className="property-line">
                         <h4>Damage Immunities </h4>
-                        {monster.damage_immunities.map((array) => (
-                            <p key={array + 'Imm'}>{array}, </p>
-                        )) }
+                        <p>{monster.damage_immunities}</p>
                     </div> 
                     }
 
                     {monster.condition_immunities.length !== 0 && 
                     <div className="property-line">
                         <h4>Condition Immunities </h4>
-                        {monster.condition_immunities.map((array) => (
-                            <p key={array.index}>{array.name}, </p>
-                        )) }
+                        <p>{monster.condition_immunities}</p>
                     </div> 
                     }
 
                     {monster.senses.length !== 0 && 
                     <div className="property-line">
                         <h4>Senses </h4>
-                        {Object.entries(monster.senses).map((array)=>(
-                                <p key={array[0]}>{array[0]} {array[1]}, </p>
-                        ))
-                        }
+                        <p>{monster.senses}</p>
                     </div> 
-                    }
+                    } 
 
                     <div className="property-line">
                         <h4>Languages </h4>
@@ -220,7 +229,7 @@ useEffect(() => {
                        
                     <div className="property-line last">
                         <h4>Challenge </h4>
-                        <p>{monster.challenge_rating} ({monster.xp} XP)</p>
+                        <p>{monster.challenge_rating}</p>
                     </div>  
                 </div>  
                 <svg height="5" width="100%" className="tapered-rule">
@@ -238,8 +247,7 @@ useEffect(() => {
                 <div className="actions">
                     <h3>Legendary Actions</h3> 
                     <h6 />
-                    Monster can take 1-3 legendary actions, choosing from the options below. Only one legendary action
-                    option can be used at a time and only at the end of another creature's turn. The monster regains spent legendary actions at the start of its turn.
+                    {monster.legendary_desc}
                     {monster.legendary_actions.map((array) => (
                     <div key={array.name+'specialTopDiv'} className="property-block">
                     <h4 key={array.name+'specialTop'}>{array.name}. </h4>

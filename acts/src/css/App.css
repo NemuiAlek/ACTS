@@ -13,33 +13,12 @@ html{
   /* z-index: 1; */
 }
 
-.monsterPage{
-  background-color: gray;
-}
-
-.monsterPage h1{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .allContainers{
   background-color: lightgray;
   display: flex;
   flex-flow: row wrap;
 }
 
-.allContainers .monsterContainer{
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  width: 12vw;
-  height: 5vw;
-  margin: 1vw;
-  background-color: gray;
-  cursor: pointer;
-}
 
 .navItem{
   margin: 0 1vw 0 1vw

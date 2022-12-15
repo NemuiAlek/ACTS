@@ -11,9 +11,9 @@ export default function Navz(){
     const { theUser, logout } = useContext(UserContext);
     const location = useLocation();
 
-    if(location.pathname === '/'){
-        return null
-    }
+    // if(location.pathname === '/'){
+    //     return null
+    // }
 
     return (
         <Navbar variant="dark" bg="dark" expand="sm">
@@ -60,14 +60,6 @@ export default function Navz(){
 
                 </NavDropdown>
 
-                {!theUser && (
-                  <div>
-                    <Nav.Item className="navItem">
-                      <Nav.Link as={Link} to={"/SignUp"}>Sign Up</Nav.Link>
-                    </Nav.Item>
-                  </div>
-                )}
-
                 {!theUser &&(
                   <div>
                     <Nav.Item className="navItem">
@@ -76,23 +68,26 @@ export default function Navz(){
                 </div>
                 )}
 
-                {theUser &&(
+                {!theUser && (
                   <div>
                     <Nav.Item className="navItem">
-                      <Nav.Link as={Link} to={"/Profile/"+theUser.id}>Profile</Nav.Link>
+                      <Nav.Link as={Link} to={"/SignUp"}>Sign Up</Nav.Link>
                     </Nav.Item>
-                </div>
+                  </div>
                 )}
 
                 {theUser &&(
-                  <div>
-                    <Nav.Item className="navItem">
-                      <Nav.Link onClick={logout}>Log Out</Nav.Link>
-                    </Nav.Item>
-                </div>
+                <NavDropdown
+                  id="combatDropdown"
+                  title={theUser.userName}
+                  menuVariant="dark"
+                  className="navItem"
+                >
+                  <NavDropdown.Item as={Link} to={"/Profile/"+theUser.id}>Profile</NavDropdown.Item>
+                  <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+
+                </NavDropdown>
                 )}
-
-
 
               </Nav>
             </Navbar.Collapse>

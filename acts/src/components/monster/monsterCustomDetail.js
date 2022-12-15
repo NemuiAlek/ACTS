@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import UserContext from "../../contexts/UserContext";
 import axios from "axios"
 
 
@@ -7,6 +8,7 @@ export default function MonsterStandard(){
 
     const navigate = useNavigate();
     const params = useParams()
+    const { theUser, getUserInfo } = useContext(UserContext);   
 /*
 ======================== STATES ======================
 */
@@ -54,7 +56,10 @@ useEffect(() => {
 
             <p>{monster.MonsterDescription}</p>
 
-        <button className="profileEditOptions" onClick={updateMonster}>Update</button>
+        {theUser && theUser.id === monster.CreatedBy && (
+            <button className="profileEditOptions" onClick={updateMonster}>Update</button>
+        )}
+        
 
         </div>
     )
