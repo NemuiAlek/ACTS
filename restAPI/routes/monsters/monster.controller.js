@@ -7,8 +7,10 @@ const monsterService = require('./monster.service');
 // routes
 router.get('/', allMonsters)
 router.get('/:id', monsterData)
+router.post('/create-update-array/:id', create_update_array)
+router.post('/create-update-delete/:id', create_update_dete)
 router.post('/create-update/:id', create_update);
-router.put('/update/:id', updateSchema, update);
+router.put('/update/:id', update);
 router.post('/delete/:id', _delete);
 
 module.exports = router;
@@ -30,7 +32,19 @@ function monsterData(req, res, next) {
 
 function create_update(req, res, next) {
     monsterService.create_update(req.params.id, req.body)
-        .then(() => res.json('check sql kekw'))
+        .then((msg) => res.json(msg))
+        .catch(next);
+}
+
+function create_update_array(req, res, next) {
+    monsterService.create_update_array(req.params.id, req.body)
+        .then((msg) => res.json(msg))
+        .catch(next);
+}
+
+function create_update_dete(req, res, next) {
+    monsterService.create_update_dete(req.params.id, req.body)
+        .then((msg) => res.json(msg))
         .catch(next);
 }
 
@@ -57,17 +71,5 @@ function createSchema(req, res, next) {
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required()
     });
-    validateRequest(req, next, schema);
-}
-
-function updateSchema(req, res, next) {
-    console.log(req.body)
-    const schema = Joi.object({
-        userName: Joi.string().empty(''),
-        email: Joi.string().email().empty(''),
-        currentPass: Joi.string().min(6).empty(''),
-        newPass: Joi.string().min(6).empty(''),
-        confirmPass: Joi.string().valid(Joi.ref('newPass')).empty('')
-    }).with('newPass', 'confirmPass');
     validateRequest(req, next, schema);
 }

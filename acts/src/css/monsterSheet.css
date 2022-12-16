@@ -3,7 +3,7 @@ body {
     text-align: center;
     font-size: 13.5px;
     line-height: 1.2em;
-    background-color: gray;
+    background-color: transparent;
   }
   body *{
     box-sizing: border-box;
@@ -19,6 +19,7 @@ body {
     width: 17%;
     min-width:280px;
     background: #FDF1DC;
+    background-image: url('../../public/statblockparch.jpg');
     padding: 5px 10px 20px;
     box-shadow: 0 0 1.5em #867453;
   }
@@ -209,7 +210,7 @@ body {
   }
 
 .monsterList{
-  background: #FDF1DC;
+  background-image: url('../../public/statblockparch.jpg');
 }
 
 .monsterListHead{
@@ -232,7 +233,7 @@ body {
 .listFilters label{
   position: absolute;
   right: 21%;
-  color:#7A200D;
+  color:white;
   font-weight: bold;
 }
 
@@ -242,7 +243,7 @@ body {
 }
 
 .monsterPage{
-  background-color: gray;
+  background-color: transparent;
   width: 100%;
   display: flex;
   align-items: center;
@@ -260,14 +261,88 @@ body {
   justify-content: center;
 }
 
-.allContainers .monsterContainer{
+#updateCreatePage{
   display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  width: 12vw;
-  height: 5vw;
-  margin: 1vw;
-  background-color: gray;
-  cursor: pointer;
+  flex-direction: row;
+  justify-content: space-around;
 }
+
+#updateCreatePage #monsterSheet{
+width: 50%;
+}
+
+#updateCreatePage #monsterInput{
+  width: 40%;
+  background-image: url('../../public/statblockparch.jpg');
+  }
+
+#updateCreatePage .stat-block.wide{
+    width: 75%;
+    min-width: 560px;
+    text-align: center;
+  }
+
+#updateCreatePage .inputGrouping{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 2vw;
+}
+
+#updateCreatePage .inputGrouping .inputField{
+  display:flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+#updateCreatePage .inputGrouping .inputField.xsmall{
+  width: 12%;
+  align-items: center;
+}
+
+#updateCreatePage .inputGrouping .inputField.small{
+  width: 15%;
+  align-items: center;
+}
+
+#updateCreatePage .inputGrouping .inputField.medium{
+  width: 20%;
+  align-items: center;
+}
+
+#updateCreatePage .inputGrouping .inputField.xmedium{
+  width: 23%;
+  align-items: center;
+}
+
+#updateCreatePage .inputGrouping .inputField.large{
+  width: 35%;
+  align-items: center;
+}
+
+#updateCreatePage .inputGrouping .inputField input{
+  font-size: 15px;
+  width: 100%;
+  height: 30px;
+  text-align: center; 
+}
+
+#updateCreatePage .inputGrouping .inputField label{
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#updateCreatePage .inputGrouping.inputArray{
+  height: auto;
+}
+
+#updateCreatePage .inputGrouping.inputArray hr{
+  margin-top: 0px;
+}
+
+#updateCreatePage .inputGrouping.inputArray .Table{
+  width: 90%;
+  justify-self: center;
+}
+

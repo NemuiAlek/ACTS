@@ -17,37 +17,43 @@ module.exports = {
     getAll,
     getData,
     create_update,
+    create_update_array,
+    create_update_dete,
     delete: _delete,
 };
 
 //getAll
 async function getAll(){
     
-    let data 
-        await sequelize.query(`exec getAll`)
-        .then((result)=>{
-            data = result[0]
-        })
-        .catch((err)=>{
-            data = err
-        })
-        
-    return data
+    let data
+
+    try {
+        data = await sequelize.query(`exec getAll`)
+    } catch(err) {
+        console.log(err)
+    }
+         
+    return data[0]
     }
 
 // getData
 async function getData(id){
-let data 
-    await sequelize.query(`exec getMonsterData ${id}`)
-    .then((result)=>{
-        console.log(result);
-        data = result[0][0];
-    })
-    .catch((err)=>{
-        data = err
-    })
 
-return data
+    let data
+
+    try{
+        data = await sequelize.query(`exec getMonsterData ${id}`)
+    } catch(err){
+        console.log(err)
+    }
+
+    data[0][0].speed = JSON.parse(data[0][0].speed)
+    data[0][0].skills = JSON.parse(data[0][0].skills)
+    data[0][0].special_abilities = JSON.parse(data[0][0].special_abilities)
+    data[0][0].actions = JSON.parse(data[0][0].actions)
+    data[0][0].legendary_actions = JSON.parse(data[0][0].legendary_actions)
+
+return data[0][0]
 }
 
 // create-update
@@ -57,6 +63,37 @@ async function create_update(id, params){
         .then((result)=>{
             console.log(result);
             data = 'check SQL lol';
+        })
+        .catch((err)=>{
+            data = err
+        })
+    
+    return data
+    }
+
+// create-update
+async function create_update_array(id, params){
+    let data 
+        await sequelize.query(`exec createUpdateArray '${id}', '${JSON.stringify(params)}'`)
+        .then((result)=>{
+            console.log(result);
+            data = 'Success!';
+        })
+        .catch((err)=>{
+            data = err
+        })
+    
+    return data
+    }
+
+// create-update
+async function create_update_dete(id, params){
+    console.log(params)
+    let data 
+        await sequelize.query(`exec deleteArray '${id}', '${JSON.stringify(params)}'`)
+        .then((result)=>{
+            console.log(result);
+            data = 'Success!';
         })
         .catch((err)=>{
             data = err

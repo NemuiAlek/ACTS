@@ -6,7 +6,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const navigate = useNavigate();
-	const [theUser, setTheUser] = useState(null);
+	const [theUser, setTheUser] = useState({});
 
 	const getUserInfo = () => {
 		axios

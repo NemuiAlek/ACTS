@@ -8,10 +8,8 @@ import Index from "./components/index"
 import Nav from "./components/Nav"
 
 // Monster Routes
-import MonsterStandard from "./components/monster/monsterStandard"
-import MonsterCustom from "./components/monster/monsterCustom"
-import MonsterStandardDetail from "./components/monster/monsterStandardDetail"
-import MonsterCustomDetail from "./components/monster/monsterCustomDetail"
+import MonsterStandard from "./components/monster/monster"
+import MonsterStandardDetail from "./components/monster/monsterDetail"
 import MonsterCreateModify from "./components/monster/monsterCreate_Modify"
 
 // Combat Routes
@@ -40,10 +38,8 @@ function App() {
           <Route path="/" element={<Index />} />
 
         {/* Monster Routes */}
-          <Route path="/Monster/standard" element={<MonsterStandard />} />
-          <Route path="/Monster/custom" element={<MonsterCustom />} />
-          <Route path="/Monster/standard/:id" element={<MonsterStandardDetail />} />
-          <Route path="/Monster/custom/:id" element={<MonsterCustomDetail />} />
+          <Route path="/Monster/:id" element={<MonsterStandard />} />
+          <Route path="/Monster/detail/:id" element={<MonsterStandardDetail />} />
           <Route path="/Monster/create-modify/:id" element={<MonsterCreateModify />} />
 
 

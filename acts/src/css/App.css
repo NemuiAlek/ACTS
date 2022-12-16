@@ -1,5 +1,11 @@
 html{
-  background-color: gray;
+  background-image: url('../../public/background.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* height: 100vh; */
+  height: 100%;
+  width: 100%;
+
 }
 
 .Nav{
@@ -9,16 +15,13 @@ html{
   align-items: top;
   text-align: center;
   padding: 10px;
-  background-color: gray;
+  /* background-color: gray; */
   /* z-index: 1; */
 }
 
-.allContainers{
-  background-color: lightgray;
-  display: flex;
-  flex-flow: row wrap;
+h1{
+  color: white;
 }
-
 
 .navItem{
   margin: 0 1vw 0 1vw
@@ -59,7 +62,7 @@ html{
   align-items: center;
   text-align: center;
   padding: 6vw 50px 50px 50px;
-  background-color: gray;
+  /* background-color: gray; */
   /* z-index: 1; */
 }
 

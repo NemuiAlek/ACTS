@@ -1,15 +1,16 @@
 import { useEffect, useState, useContext } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios"
 import Table from 'react-bootstrap/Table';
 
 export default function MonsterStandard(){
 
     const navigate = useNavigate();
+    const params = useParams();
 /*
 ======================== STATES ======================
 */
-
+const [board, setBoard] = useState('standard')
 const [monsters, setMonsters] = useState([])
 const [search, setSearch] = useState('')
 const [showAmt, setAmount] = useState('50')
@@ -18,7 +19,7 @@ const [showAmt, setAmount] = useState('50')
 ======================== FUNCTIONS ======================
 */
 
-const getMonsters = () =>{
+const getMonstersStandard = () =>{
     console.log(showAmt)
     axios
     .get("https://api.open5e.com/monsters/?limit="+showAmt+'&search='+search, {
@@ -31,12 +32,25 @@ const getMonsters = () =>{
     });
 }
 
+const getMonstersCustom = () =>{
+    axios
+    .get("http://localhost:4000/monsters/", {
+    })
+    .then((response) => {
+        setMonsters(response.data);
+        console.log(response.data);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}
+
 const updateInput = (e) => {
     setSearch(e.target.value);
 };
 
 const searchMonsters = (event) => {
-    event.key === 'Enter' ? getMonsters() : console.log()
+    event.key === 'Enter' ? getMonstersStandard() : console.log()
 }
 
 const updateShowAmt = (e) =>{
@@ -47,12 +61,19 @@ const updateShowAmt = (e) =>{
 ======================== USE EFFECTS ======================
 */
 
+useEffect(()=>{
+    setBoard( () => params.id);
+},[params.id])
+
 useEffect(() => {
-    getMonsters();
-}, [showAmt])
+    params.id === 'standard' ? getMonstersStandard() :
+    params.id === 'custom' ? getMonstersCustom() :
+    getMonstersStandard()
+    
+}, [showAmt, board])
 
 const getDetails = (id) => {
-    navigate('/monster/standard/'+id)
+    navigate('/monster/detail/'+id)
 }
 
 /*
@@ -61,7 +82,8 @@ const getDetails = (id) => {
 return (
     <div className="monsterPage">
         <div className="monsterListContainer">
-        <h1>Standard Monsters</h1>
+        <h1>{params.id === 'custom' ? `Custom Monsters` : `Standard Monsters`}</h1>
+
         <div className="listFilters">
             <input
                 type="text"
@@ -73,7 +95,8 @@ return (
 		        }} />
         
         <label>Monsters per Page</label>
-        <select onChange={updateShowAmt}>
+        {params.id === 'standard' && (
+            <select onChange={updateShowAmt}>
             <option>50</option>
             <option>100</option>
             <option>200</option>
@@ -81,6 +104,14 @@ return (
             <option>1000</option>
             <option>All</option>
         </select>
+        )}
+
+        {params.id === 'custom' && (
+            <select disabled>
+            <option>All</option>
+        </select>
+        )}
+
 
         </div>
 
@@ -100,7 +131,7 @@ return (
      
             <tbody>
         {monsters.map((eachMonster) => (
-                <tr className="monsterContainer" key={eachMonster.slug} onClick={() => getDetails(eachMonster.slug)}>
+                <tr className="monsterContainer" key={eachMonster.slug === undefined ? eachMonster.id : eachMonster.slug} onClick={() => getDetails(eachMonster.slug === undefined ? eachMonster.id : eachMonster.slug)}>
                     <td>{eachMonster.name}</td>
                     <td>{eachMonster.challenge_rating}</td>
                     <td>{eachMonster.hit_points}</td>

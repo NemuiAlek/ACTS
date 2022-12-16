@@ -29,21 +29,21 @@ export default function Navz(){
                   menuVariant="dark"
                   className="navItem"
                 >
-                  <NavDropdown.Item as={Link} to={"/Monster/standard"}>Standard</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to={"/Monster/custom"}>Custom</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={"/monster/standard"}>Standard</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={"/monster/custom"}>Custom</NavDropdown.Item>
 
                   {theUser && (
                     <div>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to={"/Monster/create-modify/new"}>Create</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/monster/create-modify/new"}>Create</NavDropdown.Item>
                   </div>
                   )}
 
                   {!theUser && (
                     <div>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to={"/SignUp"}>Create</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/SignUp"}>Update</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/login"}>Create</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/login"}>Update</NavDropdown.Item>
                   </div>
                   )}
 
@@ -63,7 +63,7 @@ export default function Navz(){
                 {!theUser &&(
                   <div>
                     <Nav.Item className="navItem">
-                      <Nav.Link as={Link} to={"/LogIn"}>Log In</Nav.Link>
+                      <Nav.Link as={Link} to={"/login"}>Log In</Nav.Link>
                     </Nav.Item>
                 </div>
                 )}
@@ -71,7 +71,7 @@ export default function Navz(){
                 {!theUser && (
                   <div>
                     <Nav.Item className="navItem">
-                      <Nav.Link as={Link} to={"/SignUp"}>Sign Up</Nav.Link>
+                      <Nav.Link as={Link} to={"/signup"}>Sign Up</Nav.Link>
                     </Nav.Item>
                   </div>
                 )}
@@ -83,7 +83,7 @@ export default function Navz(){
                   menuVariant="dark"
                   className="navItem"
                 >
-                  <NavDropdown.Item as={Link} to={"/Profile/"+theUser.id}>Profile</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to={"/profile/"+theUser.id}>Profile</NavDropdown.Item>
                   <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
 
                 </NavDropdown>
