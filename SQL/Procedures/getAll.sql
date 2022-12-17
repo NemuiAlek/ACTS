@@ -13,3 +13,4 @@ SELECT
 ,m.legendary_desc
 ,m.CreatedBy
 FROM dbo.monster m
+ORDER BY m.[name] asc

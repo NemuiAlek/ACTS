@@ -12,7 +12,7 @@ drop table monster
 
 CREATE TABLE monster(
  id BIGINT PRIMARY KEY IDENTITY (1,1)
-,[name] VARCHAR(100) NOT NULL
+,[name] VARCHAR(100) NOT NULL UNIQUE
 ,[size] VARCHAR(1200)
 ,[type] VARCHAR(1200)
 ,alignment VARCHAR(200)
