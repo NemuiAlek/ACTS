@@ -261,38 +261,56 @@ body {
   justify-content: center;
 }
 
+#creatUpdatePage{
+  display: flex;
+  justify-content: center;
+}
+
 #updateCreatePage{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  background-image: url('../../public/statblockparch.jpg');
+  width: 95%;
+  margin:1px
 }
 
 #updateCreatePage #monsterSheet{
 width: 50%;
+background-color: transparent;
+background-image: none;
 }
 
 #updateCreatePage #monsterInput{
-  width: 40%;
-  background-image: url('../../public/statblockparch.jpg');
+  width: 50%;
   }
 
 #updateCreatePage .stat-block.wide{
-    width: 75%;
+    width: 100%;
     min-width: 560px;
     text-align: center;
-  }
+    margin: 0px;
+    background-image: none;
+    background-color: transparent;
+    box-shadow: none;
+    border-style: hidden hidden hidden double;
+}
+
+#updateCreatePage .inputGrouping.top{
+  margin-top: 20px;
+}
 
 #updateCreatePage .inputGrouping{
   display:flex;
   flex-direction: row;
   justify-content: space-around;
-  height: 2vw;
+  height: auto;
 }
 
 #updateCreatePage .inputGrouping .inputField{
   display:flex;
   flex-direction: column;
-  align-items: baseline;
+  justify-content: center;
 }
 
 #updateCreatePage .inputGrouping .inputField.xsmall{
@@ -327,6 +345,34 @@ width: 50%;
   text-align: center; 
 }
 
+#updateCreatePage .inputGrouping .inputField select{
+  font-size: 15px;
+  width: 100%;
+  height: 30px;
+  text-align: center; 
+}
+
+#updateCreatePage .inputGrouping .inputField textarea.small{
+  font-size: 15px;
+  width: 100%;
+  height: 30px;
+  text-align: left; 
+}
+
+#updateCreatePage .inputGrouping .inputField textarea.medium{
+  font-size: 15px;
+  width: 100%;
+  height: 60px;
+  text-align: left; 
+}
+
+#updateCreatePage .inputGrouping .inputField textarea.large{
+  font-size: 15px;
+  width: 100%;
+  height: 90px;
+  text-align: left; 
+}
+
 #updateCreatePage .inputGrouping .inputField label{
   font-size: 17px;
   font-weight: bold;
@@ -337,12 +383,42 @@ width: 50%;
   height: auto;
 }
 
+
 #updateCreatePage .inputGrouping.inputArray hr{
   margin-top: 0px;
 }
 
-#updateCreatePage .inputGrouping.inputArray .Table{
-  width: 90%;
+#updateCreatePage .inputGrouping.inputArray .table{
+  width: 95%;
   justify-self: center;
 }
+
+#updateCreatePage .inputGrouping.inputArray .table tbody{
+  cursor: pointer;
+}
+
+#updateCreatePage .inputGrouping.inputArray .table tbody td.medium{
+  width:25%
+}
+
+#deleteMonster{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+#deleteMonster .infoBox{
+  width: 50%;
+  background-image: url('../../public/statblockparch.jpg');
+  padding: 50px;
+}
+
+#deleteMonster .infoBox h1{
+font-weight: bold;
+color: #7A200D;
+
+}
+
 

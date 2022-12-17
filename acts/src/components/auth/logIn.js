@@ -35,7 +35,7 @@ const LoginSubmit = (event) => {
 
     axios
     .post(
-        "http://localhost:4000/users/login",
+        "http://localhost:4000/user/login",
         {
             userName: formState.username,
             password: formState.password,
@@ -66,14 +66,15 @@ useEffect(() => {
 ======================== HTML(JSX) ======================
 */
 
-    return (
-        <div className="homePage">
-    
+return (
+<div id="profilePage">
+     <div className="homePage profilePage">
+     <div className="username">
         <h1>Log In Page</h1>
 
         <form>
         {<p>{errorMessage}</p>}
-        <p>UserName/Email</p>
+        <label>UserName/Email</label>
         <input id="usernameInput"
         type="text"
 		value={formState.username}
@@ -81,9 +82,7 @@ useEffect(() => {
 		updateInput(e, "username");
 		}}></input>
 
-        <br />
-        <br />
-        <p>Password</p>
+        <label>Password</label>
         <input 
         type="password" id="passwordInput"
 		value={formState.password}
@@ -96,7 +95,7 @@ useEffect(() => {
 
         <button onClick={LoginSubmit}>Submit</button>
         </form>
-
-        </div>
-    )
-    }
+    </div>
+    </div>
+</div>
+)}

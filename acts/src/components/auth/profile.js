@@ -38,7 +38,7 @@ export default function Profile(){
     const waitToLoad = () =>{
         setTimeout(() => {
             setUser((x) => ({...x, wait:true}))
-        }, 500);
+        }, 1500);
     }
 
     const updateInput = (e, thingToUpdate) => {
@@ -133,7 +133,7 @@ export default function Profile(){
         } else if (editMode === true && deleteMode === true){
             axios
                 .post(
-                    "http://localhost:4000/users/delete/"+theUser.id,
+                    "http://localhost:4000/user/delete/"+theUser.id,
                     {
                         currentPass: userInfo.currentPass,
                     },
@@ -188,7 +188,7 @@ export default function Profile(){
              errorMessage.validCurrentPass === true && errorMessage.validNewPass === true && errorMessage.validConfirm === true && editMode === true){
             axios
                 .put(
-                    "http://localhost:4000/users/update/"+theUser.id,
+                    "http://localhost:4000/user/update/"+theUser.id,
                     {
                         userName: userInfo.username,
                         email: userInfo.email,
@@ -229,6 +229,7 @@ export default function Profile(){
 */
         return (
         
+        <div id="profilePage">
             <div className="homePage profilePage">
         
             <h1>Profile</h1>
@@ -337,5 +338,5 @@ export default function Profile(){
             </form>
             
             </div>
-        ) 
-    }
+    </div>
+)}

@@ -43,22 +43,14 @@ export default function Navz(){
                     <div>
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={Link} to={"/login"}>Create</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/login"}>Update</NavDropdown.Item>
                   </div>
                   )}
 
                 </NavDropdown>
 
-                <NavDropdown
-                  id="combatDropdown"
-                  title="Combat"
-                  menuVariant="dark"
-                  className="navItem"
-                >
-                  <NavDropdown.Item as={Link} to={"/combatTracker"}>New</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to={"/combatTracker"}>Load</NavDropdown.Item>
-
-                </NavDropdown>
+                <Nav.Item className="navItem">
+                      <Nav.Link as={Link} to={"/combat"}>Combat</Nav.Link>
+                </Nav.Item>
 
                 {!theUser &&(
                   <div>

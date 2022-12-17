@@ -40,7 +40,7 @@ const [monster, setMonster] = useState({
     intelligence: 10,
     intelligence_save: '',
     languages: "",
-    legendary_actions: "",
+    legendary_actions: [],
     legendary_desc: "",
     name: "New Monster",
     perception: 0,
@@ -48,13 +48,15 @@ const [monster, setMonster] = useState({
     senses: "",
     size: "",
     skills: [],
+    skillsInputName:'',
+    skillsInputDesc:'',
     slug: "",
     special_abilities:[],
     special_abilitiesInputName:'',
     special_abilitiesInputDesc:'',
     speed:[],
     speedInputName:'',
-    speedInputModifier:0,
+    speedInputDesc:0,
     spell_list: [],
     strength: 10,
     strength_save: '',
@@ -72,6 +74,11 @@ const [arrayID, setArray] = useState({
     actions:0,
     legendary_actions:0
 })
+const[deleteMode,setDeleteMode] = useState({
+    active:false,
+    password:'',
+    errorMsg:''
+})
 
 
 /*
@@ -82,9 +89,13 @@ const updateInput = (e, thingToUpdate) => {
     setMonster({ ...monster, [thingToUpdate]: e.target.value });
 };
 
+const enterPass = (e, thingToUpdate) => {
+    setDeleteMode({ ...deleteMode, [thingToUpdate]: e.target.value });
+};
+
 const getMonster = () =>{
     axios
-    .get("http://localhost:4000/monsters/" + params.id, {
+    .get("http://localhost:4000/monster/" + params.id, {
     })
     .then((response) => {
         setMonster(response.data);
@@ -94,37 +105,53 @@ const getMonster = () =>{
     });
 }
 
-const newMonster = () =>{
-    setForm(true)
-}
-
 const submitBtn = (event) => {
 
     event.preventDefault();
 
     // fix this later plz
-    const monName = monster.monsterName.replace(/'/g,"''");
-    const monTitle = monster.Title.replace(/'/g,"''");
-    const monmon = monster.Title.replace(/'/g,"''")
+    monster.name = monster.name.replace(/'/g,"''")
+    monster.type = monster.type.replace(/'/g,"''")
+    monster.alignment = monster.alignment.replace(/'/g,"''")
+    monster.damage_vulnerabilities = monster.damage_vulnerabilities.replace(/'/g,"''")
+    monster.damage_resistances = monster.damage_resistances.replace(/'/g,"''")
+    monster.damage_immunities = monster.damage_immunities.replace(/'/g,"''")
+    monster.condition_immunities = monster.condition_immunities.replace(/'/g,"''")
+    monster.senses = monster.senses.replace(/'/g,"''")
+    monster.languages = monster.languages.replace(/'/g,"''")
 
+    console.log(monster, params.id)
+    ///*
     axios
-    .post("http://localhost:4000/monsters/create-update/" + params.id, 
+    .post("http://localhost:4000/monster/create-update/" + params.id, 
     {
+        userID: theUser.id,
         data: monster
     })
     .then((response) => {
-        console.log(response);
-        window.location.reload();;
+        if(params.id === 'new'){
+            navigate('/monster/create-modify/'+response.data.id)
+        } else{
+            window.location.reload();
+        }
+
     })
     .catch((err) => {
         console.log(err);
     });
+    //*/    
 }
 
 
+
 const deleteMonster = () =>{
+
+    console.log(theUser.id)
+
     axios
-    .post("http://localhost:4000/monsters/delete/" + params.id, {
+    .post("http://localhost:4000/monster/delete/" + params.id, {
+        id:theUser.id,
+        password:deleteMode.password
     })
     .then((response) => {
         console.log(response);
@@ -133,50 +160,60 @@ const deleteMonster = () =>{
     })
     .catch((err) => {
         console.log(err);
+        const errorMessage = err.response.data.message
+        if (errorMessage === 'Incorrect Password'){
+            setDeleteMode((x) => ({...x, errorMsg: errorMessage}))
+        }
+        else if (errorMessage === 'No session found, please log in'){
+            alert(errorMessage)
+            navigate('/login')
+        } else {
+            alert(errorMessage)
+        }
     });
 }
 
-const upadateSpeed = (id, name, modifier) => {
-    setArray((x) => ({...x,speed: id}))
-    setMonster((x) => ({...x,speedInputName: name}));
-    setMonster((x) => ({...x,speedInputModifier: modifier}));
+const upadateArray = (array, id, name, modifier) => {
+    setArray((x) => ({...x,[array]: id}))
+    setMonster((x) => ({...x,[array+'InputName']: name,
+                             [array+'InputDesc']: modifier
+                        }));
 }
 
 const submitArray = (event, array) => {
     event.preventDefault();
     axios
-    .post("http://localhost:4000/monsters/create-update-array/" + arrayID.speed.toString(), 
+    .post("http://localhost:4000/monster/create-update-array/" + arrayID[array].toString(), 
     {
         monsterID:params.id,
         arrayName: array,
-        name: monster.speedInputName,
-        modifier: monster.speedInputModifier
+        name: monster[array+'InputName'].replace(/'/g,"''''"),
+        modifier: monster[array+'InputDesc'].replace(/'/g,"''''")
         
     })
     .then((response) => {
-        setArray((x) => ({...x,speed: 0}))
-        setMonster((x) => ({...x,speedInputName: ''}));
-        setMonster((x) => ({...x,speedInputModifier: ''}));
+        setArray((x) => ({...x,[array]: 0}))
+        setMonster((x) => ({...x,[array+'InputName']: ''}));
+        setMonster((x) => ({...x,[array+'InputDesc']: ''}));
         getMonster();
     })
     .catch((err) => {
         console.log(err);
     });
-
 }
 
 const deleteArray = (event, array) => {
     event.preventDefault();
     axios
-    .post("http://localhost:4000/monsters/create-update-delete/" + arrayID.speed.toString(), 
+    .post("http://localhost:4000/monster/delete-array/" + arrayID[array].toString(), 
     {
         monsterID:params.id,
         arrayName: array
     })
     .then((response) => {
-        setArray((x) => ({...x,speed: 0}))
-        setMonster((x) => ({...x,speedInputName: ''}));
-        setMonster((x) => ({...x,speedInputModifier: ''}));
+        setArray((x) => ({...x,[array]: 0}))
+        setMonster((x) => ({...x,[array+'InputName']: ''}));
+        setMonster((x) => ({...x,[array+'InputDesc']: ''}));
         getMonster();
     })
     .catch((err) => {
@@ -191,7 +228,7 @@ const deleteArray = (event, array) => {
 
 useEffect(() => {
     if(params.id === 'new'){
-        newMonster();
+        setForm(true);
         return
     } else {
         getMonster();
@@ -202,32 +239,39 @@ useEffect(() => {
 /*
 ======================== HTML(JSX) ======================
 */
-    return (
 
-<div id="monsterTopButtons">
-{newID && (
-        <div>
-            <Button variant="success" className="profileEditOptions" onClick={submitBtn}>Create</Button>
+if(deleteMode.active){
+    return (
+        <div id="deleteMonster">
+            <div className="infoBox">
+            <h1>WARNING - THIS WILL PERMANENTLY DELETE THE MONSTER</h1>
+            <h2>Enter current password below if you are sure you want to delete.</h2>
+            {deleteMode.errorMsg !== '' && <h5>Invalid Password</h5>}
+            <input 
+                    type="password"
+                    value={deleteMode.password}
+                    onChange={(e) => {
+                    enterPass(e, "password");
+                    }} />
+            </div>
+            {theUser && <Button variant="danger" className="profileEditOptions" onClick={deleteMonster}>Delete</Button>}
         </div>
-        )}
-        
-        {!newID && (
-        <div>
-            <Button variant="success" className="profileEditOptions" size="lg" onClick={submitBtn}>Update</Button>
-            <Button variant="danger" className="profileEditOptions" onClick={deleteMonster}>Delete</Button>
-        </div>
-        )}
+    )
+}
+
+if(theUser){    return ( 
+
+<div id="creatUpdatePage">
 
     <div id="updateCreatePage">
 
     <div id="monsterInput">
         <form>
-        <hr />
-        <div className="inputGrouping">
+        <div className="inputGrouping top">
             <div className="inputField large">
                 <label>Name</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.name}
                     onChange={(e) => {
                     updateInput(e, "name");
@@ -235,17 +279,22 @@ useEffect(() => {
             </div>
             <div className="inputField small">
                 <label>Size</label>
-                <input 
-                    type="text"
-                    value={monster.size}
-                    onChange={(e) => {
+                <select onChange={(e) => {
                     updateInput(e, "size");
-                    }} />
+                    }}>
+                    <option selected disabled value={monster.size} hidden>{monster.size}</option>
+                    <option value="Tiny">Tiny</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="Huge">Huge</option>
+                    <option value="Garantaun">Gargantuan</option>
+                </select>
             </div>
             <div className="inputField small">   
                 <label>Type</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.type}
                     onChange={(e) => {
                     updateInput(e, "type");
@@ -253,8 +302,8 @@ useEffect(() => {
             </div>
             <div className="inputField medium">  
                 <label>Alignment</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.alignment}
                     onChange={(e) => {
                     updateInput(e, "alignment");
@@ -411,8 +460,8 @@ useEffect(() => {
         <div className="inputGrouping">
             <div className="inputField xmedium">
                 <label>Damage Vulnerabilities</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.damage_vulnerabilities}
                     onChange={(e) => {
                     updateInput(e, "damage_vulnerabilities");
@@ -420,8 +469,8 @@ useEffect(() => {
             </div>
             <div className="inputField xmedium">
                 <label>Damage Resistances</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.damage_resistances}
                     onChange={(e) => {
                     updateInput(e, "damage_resistances");
@@ -429,8 +478,8 @@ useEffect(() => {
             </div>
             <div className="inputField xmedium">   
                 <label>Damage Immunities</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.damage_immunities}
                     onChange={(e) => {
                     updateInput(e, "damage_immunities");
@@ -438,8 +487,8 @@ useEffect(() => {
             </div>
             <div className="inputField xmedium">  
                 <label>Condition Immunities</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.condition_immunities}
                     onChange={(e) => {
                     updateInput(e, "condition_immunities");
@@ -451,8 +500,8 @@ useEffect(() => {
         <div className="inputGrouping"> 
             <div className="inputField large"> 
                 <label>Senses</label>
-                <input 
-                    type="text"
+                <textarea
+                 className="form-control medium"
                     value={monster.senses}
                     onChange={(e) => {
                     updateInput(e, "senses");
@@ -460,8 +509,8 @@ useEffect(() => {
             </div>               
             <div className="inputField large"> 
                 <label>Languages</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.languages}
                     onChange={(e) => {
                     updateInput(e, "languages");
@@ -480,13 +529,16 @@ useEffect(() => {
         <hr />
     </form>
 
+
+ {params.id !== 'new' && (
+<div id="arrayInputs">
     <div id="speedInput">
     <form>
     <div className="inputGrouping"> 
             <div className="inputField large"> 
                 <label>Speed Type</label>
-                <input 
-                    type="text"
+                <textarea 
+                    className="form-control small"
                     value={monster.speedInputName}
                     onChange={(e) => {
                     updateInput(e, "speedInputName");
@@ -494,24 +546,26 @@ useEffect(() => {
             </div>               
             <div className="inputField large"> 
                 <label>Movement (feet)</label>
-                <input 
-                    type="text"
-                    value={monster.speedInputModifier}
+                <input
+                    type="number"
+                    value={monster.speedInputDesc}
                     onChange={(e) => {
-                    updateInput(e, "speedInputModifier");
+                    updateInput(e, "speedInputDesc");
                     }} />
             </div> 
             <div className="inputField xsmall"> 
-                    <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'speed')}>Add</Button>
+                    {theUser && arrayID.speed === 0 && (<Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'speed')}>Add</Button>)}
+                    {theUser && arrayID.speed !== 0 && (<Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'speed')}>Update</Button>)}
             </div>
             <div className="inputField xsmall"> 
-                    <Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'speed')}>Delete</Button>
+                    {theUser && (<Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'speed')}>Delete</Button>)}
             </div>  
     </div>
     <br />
-    </form>
+     </form>
+{monster.speed && (
     <div className="inputGrouping inputArray">
-    <Table className="Table" striped hover size="sm">
+    <Table className="table" striped hover size="sm">
             <thead>
                 <tr className="monsterListHead">
                     <th>ID</th>
@@ -522,7 +576,7 @@ useEffect(() => {
      
             <tbody>
         {monster.speed.map((attribute) => (
-                <tr key={attribute.id} onClick={() => upadateSpeed(attribute.id, attribute.name, attribute.modifier)}>
+                <tr key={attribute.id} onClick={() => upadateArray('speed',attribute.id, attribute.name, attribute.modifier)}>
                     <td>{attribute.id}</td>
                     <td>{attribute.name}</td>
                     <td>{attribute.modifier}</td>
@@ -531,13 +585,257 @@ useEffect(() => {
             </tbody>
         </Table>
     </div>
+)}
     <hr />
     </div>
 
+    <div id="skillInput">
+    <form>
+    <div className="inputGrouping"> 
+            <div className="inputField large"> 
+                <label>Skill Name</label>
+                <textarea 
+                    className="form-control small"
+                    value={monster.skillsInputName}
+                    onChange={(e) => {
+                    updateInput(e, "skillsInputName");
+                    }} />
+            </div>               
+            <div className="inputField large"> 
+                <label>Skill Modifier</label>
+                <input 
+                    type="number"
+                    value={monster.skillsInputDesc}
+                    onChange={(e) => {
+                    updateInput(e, "skillsInputDesc");
+                    }} />
+            </div> 
+            <div className="inputField xsmall"> 
+                    {theUser && arrayID.skills === 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'skills')}>Add</Button>}
+                    {theUser && arrayID.skills !== 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'skills')}>Update</Button>}
+            </div>
+            <div className="inputField xsmall"> 
+                    {theUser && <Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'skills')}>Delete</Button>}
+            </div>  
+    </div>
+    <br />
+    </form>
+    {monster.skills && (
+    <div className="inputGrouping inputArray">
+    <Table className="table" striped hover size="sm">
+            <thead>
+                <tr className="monsterListHead">
+                    <th>ID</th>
+                    <th>Skill Name</th>
+                    <th>Skill Modifier</th>
+                </tr>
+            </thead>
+     
+            <tbody>
+        {monster.skills.map((attribute) => (
+                <tr key={attribute.id} onClick={() => upadateArray('skills',attribute.id, attribute.name, attribute.modifier)}>
+                    <td>{attribute.id}</td>
+                    <td>{attribute.name}</td>
+                    <td>{attribute.modifier}</td>
+                </tr>))
+        } 
+            </tbody>
+        </Table>
+    </div>
+    )}
+    <hr />
+    </div>
 
+    <div id="special_abilitiesInput">
+    <form>
+    <div className="inputGrouping"> 
+            <div className="inputField large"> 
+                <label>Special Ability</label>
+                <textarea 
+                    className="form-control small"
+                    value={monster.special_abilitiesInputName}
+                    onChange={(e) => {
+                    updateInput(e, "special_abilitiesInputName");
+                    }} />
+            </div>               
+            <div className="inputField large"> 
+                <label>Special Ability Description</label>
+                <textarea 
+                    className="form-control large"
+                    value={monster.special_abilitiesInputDesc}
+                    onChange={(e) => {
+                    updateInput(e, "special_abilitiesInputDesc");
+                    }} />
+            </div> 
+            <div className="inputField xsmall"> 
+                    {theUser && arrayID.special_abilities === 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'special_abilities')}>Add</Button>}
+                    {theUser && arrayID.special_abilities !== 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'special_abilities')}>Update</Button>}
+            </div>
+            <div className="inputField xsmall"> 
+                    {theUser && <Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'special_abilities')}>Delete</Button>}
+            </div>  
+    </div>
+    <br />
+    </form>
+    {monster.special_abilities && (
+    <div className="inputGrouping inputArray">
+    <Table className="table" striped hover size="sm">
+            <thead>
+                <tr className="monsterListHead">
+                    <th>ID</th>
+                    <th>Special Ability</th>
+                    <th>Special Ability Description</th>
+                </tr>
+            </thead>
+     
+            <tbody>
+        {monster.special_abilities.map((attribute) => (
+                <tr key={attribute.id} onClick={() => upadateArray('special_abilities',attribute.id, attribute.name, attribute.desc)}>
+                    <td>{attribute.id}</td>
+                    <td className="medium">{attribute.name}</td>
+                    <td>{attribute.desc}</td>
+                </tr>))
+        } 
+            </tbody>
+        </Table>
+    </div>
+    )}
+    <hr />
+    </div>
+    
+    <div id="legendary_actionsInput">
+    <form>
+    <div className="inputGrouping"> 
+            <div className="inputField large"> 
+                <label>Legendary Action</label>
+                <textarea 
+                    className="form-control small"
+                    value={monster.legendary_actionsInputName}
+                    onChange={(e) => {
+                    updateInput(e, "legendary_actionsInputName");
+                    }} />
+            </div>               
+            <div className="inputField large"> 
+                <label>Legendary Action Description</label>
+                <textarea 
+                    className="form-control large"
+                    value={monster.legendary_actionsInputDesc}
+                    onChange={(e) => {
+                    updateInput(e, "legendary_actionsInputDesc");
+                    }} />
+            </div> 
+            <div className="inputField xsmall"> 
+                    {theUser && arrayID.legendary_actions === 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'legendary_actions')}>Add</Button>}
+                    {theUser && arrayID.legendary_actions !== 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'legendary_actions')}>Update</Button>}
+            </div>
+            <div className="inputField xsmall"> 
+                    {theUser && <Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'legendary_actions')}>Delete</Button>}
+            </div>  
+    </div>
+    <br />
+    </form>
+    {monster.legendary_actions && (
+    <div className="inputGrouping inputArray">
+    <Table className="table" striped hover size="sm">
+            <thead>
+                <tr className="monsterListHead">
+                    <th>ID</th>
+                    <th>Legendary Action</th>
+                    <th>Legendary Action Description</th>
+                </tr>
+            </thead>
+     
+            <tbody>
+        {monster.legendary_actions.map((attribute) => (
+                <tr key={attribute.id} onClick={() => upadateArray('legendary_actions',attribute.id, attribute.name, attribute.desc)}>
+                    <td>{attribute.id}</td>
+                    <td className="medium">{attribute.name}</td>
+                    <td>{attribute.desc}</td>
+                </tr>))
+        } 
+            </tbody>
+        </Table>
+    </div>
+    )}
+    <hr />
+    </div>
 
+    <div id="actionsInput">
+    <form>
+    <div className="inputGrouping"> 
+            <div className="inputField large"> 
+                <label>Action Name</label>
+                <textarea 
+                    className="form-control small"
+                    value={monster.actionsInputName}
+                    onChange={(e) => {
+                    updateInput(e, "actionsInputName");
+                    }} />
+            </div>               
+            <div className="inputField large"> 
+                <label>Action Description</label>
+                <textarea 
+                    className="form-control large"
+                    value={monster.actionsInputDesc}
+                    onChange={(e) => {
+                    updateInput(e, "actionsInputDesc");
+                    }} />
+            </div> 
+            <div className="inputField xsmall"> 
+                    {theUser && arrayID.actions === 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'actions')}>Add</Button>}
+                    {theUser && arrayID.actions !== 0 && <Button variant="success" className="profileEditOptions" onClick={(event) => submitArray(event, 'actions')}>Update</Button>}
+            </div>
+            <div className="inputField xsmall"> 
+                    {theUser && <Button variant="danger" className="profileEditOptions" onClick={(event) => deleteArray(event, 'actions')}>Delete</Button>}
+            </div>  
+    </div>
+    <br />
+    </form>
+    {monster.actions && (
+    <div className="inputGrouping inputArray">
+    <Table className="table" striped hover size="sm">
+            <thead>
+                <tr className="monsterListHead">
+                    <th>ID</th>
+                    <th>Special Ability Name</th>
+                    <th>Special Ability Description</th>
+                </tr>
+            </thead>
+     
+            <tbody>
+        {monster.actions.map((attribute) => (
+                <tr key={attribute.id} onClick={() => upadateArray('actions',attribute.id, attribute.name, attribute.desc)}>
+                    <td>{attribute.id}</td>
+                    <td className="medium">{attribute.name}</td>
+                    <td>{attribute.desc}</td>
+                </tr>))
+        } 
+            </tbody>
+        </Table>
+    </div>
+    )}
+    <hr />
+    </div>
 
 </div>
+)} 
+
+{theUser && newID && (
+        <div>
+            <Button variant="success" className="profileEditOptions" size="lg" onClick={submitBtn}>Save</Button>
+        </div>
+        )}
+        
+        {theUser && !newID && (
+        <div>
+            <Button variant="success" className="profileEditOptions" size="lg" onClick={submitBtn}>Save</Button>
+            <Button variant="danger" className="profileEditOptions" onClick={() => setDeleteMode((x) => ({...x,active:true}))}>Delete</Button>
+        </div>
+        )}
+
+</div> 
+
+
 
 
 <div id="monsterSheet">
@@ -545,7 +843,6 @@ useEffect(() => {
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 
 <div className="stat-block wide">
-    <hr className="orange-border" />
     <div className="section-left">
         <div className="creature-heading">
             <h1>{monster.name}</h1>
@@ -736,4 +1033,4 @@ useEffect(() => {
 </div>
 </div>
 </div>
-    )}
+    )}}

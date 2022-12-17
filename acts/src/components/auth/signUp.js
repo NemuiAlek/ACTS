@@ -77,7 +77,7 @@ const submitSignupForm = (event) => {
 
     axios
     .post(
-        "http://localhost:4000/users/validate",
+        "http://localhost:4000/user/validate",
         {
             userName: formState.username,
             email: formState.email,
@@ -136,7 +136,7 @@ useEffect(()=>{
     if(errorMessage.validUsername === true && errorMessage.validEmail === true && errorMessage.validPass === true && errorMessage.validConfirm === true){
         axios
             .post(
-                "http://localhost:4000/users/signup",
+                "http://localhost:4000/user/signup",
                 {
                     userName: formState.username,
                     email: formState.email,
@@ -160,7 +160,8 @@ useEffect(()=>{
 ======================== HTML(JSX) ======================
 */
     return (
-        <div className="homePage">
+        <div id="profilePage">
+            <div className="homePage profilePage">
     
         <h1>Sign Up</h1>
 
@@ -171,7 +172,7 @@ useEffect(()=>{
                 {errorMessage.validUsername !== false && (
                     <p>{errorMessage.validUsername}</p>
                 )}
-                <p>UserName</p>
+                <label>UserName</label>
                 <input id="usernameInput"
                 type="text"
                 value={formState.username}
@@ -183,7 +184,7 @@ useEffect(()=>{
                 {errorMessage.validEmail !== false && (
                     <p>{errorMessage.validEmail}</p>
                 )}
-                <p>Email</p>
+                <label>Email</label>
                 <input id="emailInput"
                 type="text"
                 value={formState.email}
@@ -195,7 +196,7 @@ useEffect(()=>{
                 {errorMessage.validPass !== false && (
                     <p>{errorMessage.validPass}</p>
                 )}
-                <p>Password</p>
+                <label>Password</label>
                 <input 
                 type="password" id="passwordInput"
                 value={formState.password}
@@ -207,7 +208,7 @@ useEffect(()=>{
                 {errorMessage.validConfirm !== false && (
                     <p>{errorMessage.validConfirm}</p>
                 )}
-                <p>Confirm Password</p>
+                <label>Confirm Password</label>
                 <input id="confirmPasswordInput"
                 type="password"
                 value={formState.confirmPassword}
@@ -221,5 +222,6 @@ useEffect(()=>{
             </form>
         </div>
     </div>
+</div>
     )
     }

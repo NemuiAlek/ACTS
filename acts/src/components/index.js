@@ -15,7 +15,7 @@ export default function Index(){
 
 return (
     <div className="homePage">
-
+        <div id="mainMenu">
 
     <h1>Advanced Combat Tracking System</h1>
 
@@ -38,8 +38,7 @@ return (
         <p><a href="#" onClick={logout} style={linkStyle}>Log Out</a></p>
         </div>
     )}
-
-
+    </div>
     </div>
 )
 }

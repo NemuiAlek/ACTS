@@ -8,6 +8,27 @@ html{
 
 }
 
+#mainMenu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+background-image: url('../../public/statblockparch.jpg');
+border-radius: 25px;
+opacity: 80%;
+padding:50px;
+}
+
+#mainMenu h1{
+  opacity: 100%;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+#mainMenu p{
+  opacity: 100%;
+  font-size: 20px;
+}
+
 .Nav{
   display: flex;
   flex-direction: row;
@@ -20,7 +41,6 @@ html{
 }
 
 h1{
-  color: white;
 }
 
 .navItem{
@@ -37,22 +57,53 @@ h1{
   margin: 10px;
 }
 
+#profilePage{
+  display: flex;
+  justify-content: center;
+  width: 100%
+}
+
+.homePage.profilePage{
+  background-image: url('../../public/statblockparch.jpg');
+}
+
+.homePage.profilePage label{
+  font-weight: bold;
+  font-size: 20px;
+  margin: 7px;
+}
+
+.homePage.profilePage h4{
+  font-weight: bold;
+  font-size: 25px;
+  margin: 5px 5px 25px 5px;
+}
+
 .profileForm{
   display: flex;
   flex-flow: column;
-  width:13vw
+  width: 15vw;
+  min-height: 15vw;
+}
+
+.profileForm input{
+  text-align: center;
 }
 
 .profilePage .editMode{
   display: flex;
   flex-flow: column;
-  width:13vw
+  width:15vw;
 }
 
 .username form{
   display:flex;
   flex-flow: column;
-  width:13vw
+  width:15vw;
+}
+
+.username input{
+  text-align:center
 }
 
 .homePage{

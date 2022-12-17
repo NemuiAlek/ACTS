@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
-import './css/monsterSheet.css';
+import './css/monster.css';
+import './css/combat.css';
 import { Link, Route, Routes } from "react-router-dom";
 
 //Home Page and Nav Bar
@@ -13,7 +14,8 @@ import MonsterStandardDetail from "./components/monster/monsterDetail"
 import MonsterCreateModify from "./components/monster/monsterCreate_Modify"
 
 // Combat Routes
-import CombatTracker from "./components/combat/combatTracker"
+import CombatCreate from "./components/combat/combatCreate"
+import CombatTrack from "./components/combat/combatTrack"
 
 // About Screen
 import About from "./components/about"
@@ -44,7 +46,8 @@ function App() {
 
 
         {/* Combat Routes */}
-          <Route path="/CombatTracker" element={<CombatTracker />} />
+          <Route path="/combat" element={<CombatCreate />} />
+          <Route path="/combattrack/:id" element={<CombatTrack />} />
 
         {/* About Screen */}
           <Route path="/About" element={<About />} />

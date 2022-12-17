@@ -60,8 +60,6 @@ const [monster, setMonster] = useState({
     })
 const [loading, setLoading] = useState(false)
 
-let speedValues
-
 /*
 ======================== FUNCTIONS ======================
 */
@@ -82,7 +80,7 @@ const getMonsterStandard = () =>{
 
 const getMonsterCustom = () =>{
     axios
-    .get("http://localhost:4000/monsters/" + params.id, {
+    .get("http://localhost:4000/monster/" + params.id, {
     })
     .then((response) => {
         setMonster(response.data);
