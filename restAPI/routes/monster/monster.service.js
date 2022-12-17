@@ -1,8 +1,7 @@
-const express = require('express');
-const router = express.Router();
 const { Sequelize } = require('sequelize');
 const dbInfo = require('../../config')
-
+const db = require('_helpers/db');
+const bcrypt = require('bcryptjs');
 
 const host = dbInfo.server;
 const userName = dbInfo.user;
@@ -18,9 +17,10 @@ module.exports = {
     getData,
     create_update,
     create_update_array,
-    create_update_dete,
+    delete_array,
     delete: _delete,
 };
+
 
 //getAll
 async function getAll(){
@@ -57,18 +57,19 @@ return data[0][0]
 }
 
 // create-update
-async function create_update(id, params){
+async function create_update(monID, params){
+
     let data 
-        await sequelize.query(`exec test '${id}', '${JSON.stringify(params)}'`)
+        await sequelize.query(`exec createUpdateMonster '${params.userID}', '${monID}', '${JSON.stringify(params.data)}'`)
         .then((result)=>{
-            console.log(result);
-            data = 'check SQL lol';
+            data = result;
         })
         .catch((err)=>{
             data = err
         })
     
-    return data
+
+    return data[0][0]
     }
 
 // create-update
@@ -87,7 +88,7 @@ async function create_update_array(id, params){
     }
 
 // create-update
-async function create_update_dete(id, params){
+async function delete_array(id, params){
     console.log(params)
     let data 
         await sequelize.query(`exec deleteArray '${id}', '${JSON.stringify(params)}'`)
@@ -103,9 +104,16 @@ async function create_update_dete(id, params){
     }
 
 // delete
-async function _delete(id){
+async function _delete(session, monID, params){
 
-        await sequelize.query(`exec deleteMonster ${id}`)
+    console.log(params.id)
+        const user = await getUser(params.id);
+    
+        if(!bcrypt.compareSync(params.password, user.passwordHash)){
+            throw "Incorrect Password"
+        }
+    
+        await sequelize.query(`exec deleteMonster ${monID}`)
         .then((result)=>{
             console.log(result);
         })
@@ -113,6 +121,11 @@ async function _delete(id){
             data = err
         })
     
-    return 'Monster deleted'
+        return "User deleted"
     }
 
+    async function getUser(id) {
+        const user = await db.User.findByPk(id);
+        if (!user) throw 'User not found';
+        return user;
+    }

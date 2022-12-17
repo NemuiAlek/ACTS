@@ -36,8 +36,9 @@ app.use(cors(corsOptions));
 //app.use(cors());
 
 // api routes
-app.use('/users', require('./routes/users/user.controller'));
-app.use('/monsters', require('./routes/monsters/monster.controller'));
+app.use('/user', require('./routes/user/user.controller'));
+app.use('/monster', require('./routes/monster/monster.controller'));
+app.use('/combat', require('./routes/combat/combat.controller'));
 
 // global error handler
 app.use(errorHandler);
